@@ -21,22 +21,12 @@ public class HelperUser extends HelperBase {
         type(By.id("email"), user.getEmail());
         type(By.id("password"), user.getPassword());
     }
-    public void submit(){
-        click(By.cssSelector("button[type='submit']"));
-    }
+
     public void logout() {
         click(By.cssSelector("a[href='/logout?url=%2Fsearch']"));
     }
     public boolean isLogged() {
         return isElementPresent(By.cssSelector("a[href='/logout?url=%2Fsearch']"));
-    }
-    public String getMessage() {
-        WebElement element = wd.findElement(By.cssSelector(".dialog-container>h2"));
-        String text = element.getText();
-        pause(2000);
-        return text;
-
-        //return wd.findElement(By.cssSelector(".dialog-container>h2")).getText();
     }
 
     public void clickOKButton() {
@@ -74,16 +64,17 @@ public class HelperUser extends HelperBase {
         js.executeScript("document.querySelector('#terms-of-use').click()");
     }
     public void checkPolicyXY(){
-        WebElement label =wd.findElement(By.cssSelector("label[for='terms-of-use']"));
-        Rectangle rectangle = label.getRect();
-        int w = rectangle.getWidth();
-        int xOffSet = -w/2;
-        //Dimension size = wd.manage().window().getSize();
+        if(!wd.findElement(By.id("terms-of-use")).isSelected()) {
+            WebElement label = wd.findElement(By.cssSelector("label[for='terms-of-use']"));
+            Rectangle rectangle = label.getRect();
+            int w = rectangle.getWidth();
+            int xOffSet = -w / 2;
+            //Dimension size = wd.manage().window().getSize();
 
 
-        Actions actions = new Actions(wd);
-        actions.moveToElement(label,xOffSet, 0).click().release().perform();
-
+            Actions actions = new Actions(wd);
+            actions.moveToElement(label, xOffSet, 0).click().release().perform();
+        }
     }
 
     public void login(User user) {
